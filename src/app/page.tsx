@@ -11,239 +11,174 @@ import {
   Globe,
   Shield,
   Sparkles,
-  Users,
   TrendingUp,
-  Star,
+  Users,
   Check,
+  Zap,
 } from "lucide-react";
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 30 },
-  visible: (i: number) => ({
+const fadeIn = {
+  hidden: { opacity: 0, y: 40 },
+  show: (i: number) => ({
     opacity: 1,
     y: 0,
-    transition: { delay: i * 0.1, duration: 0.6, ease: "easeOut" as const },
+    transition: { delay: i * 0.12, duration: 0.7, ease: [0.25, 0.4, 0.25, 1] as [number, number, number, number] },
   }),
 };
-
-const scaleIn = {
-  hidden: { opacity: 0, scale: 0.9 },
-  visible: (i: number) => ({
-    opacity: 1,
-    scale: 1,
-    transition: { delay: i * 0.15, duration: 0.5, ease: "easeOut" as const },
-  }),
-};
-
-function AnimatedCounter({ value, suffix = "" }: { value: string; suffix?: string }) {
-  return (
-    <motion.span
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.6 }}
-    >
-      {value}{suffix}
-    </motion.span>
-  );
-}
 
 export default function Home() {
   return (
-    <div className="flex flex-col min-h-full overflow-hidden">
-      {/* Header */}
-      <header className="fixed top-0 z-50 w-full border-b border-white/5 bg-black/60 backdrop-blur-xl">
-        <nav className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
-          <Link href="/" className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-blue-500 to-violet-600">
-              <Sparkles className="h-4 w-4 text-white" />
+    <div className="min-h-screen bg-white text-zinc-900 overflow-x-hidden">
+      {/* Navbar */}
+      <nav className="fixed top-0 z-50 w-full bg-white/80 backdrop-blur-lg border-b border-zinc-100">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4">
+          <Link href="/" className="flex items-center gap-2.5">
+            <div className="relative h-9 w-9 rounded-2xl bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center shadow-lg shadow-indigo-500/20">
+              <Sparkles className="h-5 w-5 text-white" />
             </div>
-            <span className="text-lg font-bold tracking-tight">Moujihi</span>
-            <span className="text-xs text-white/40 font-arabic">موجهي</span>
+            <span className="text-xl font-extrabold tracking-tight bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+              Moujihi
+            </span>
           </Link>
-          <div className="flex items-center gap-3">
-            <Link
-              href="#pricing"
-              className="hidden text-sm text-white/60 hover:text-white transition-colors sm:block"
-            >
+          <div className="flex items-center gap-6">
+            <Link href="#features" className="hidden sm:block text-sm font-medium text-zinc-500 hover:text-zinc-900 transition-colors">
+              Fonctionnalites
+            </Link>
+            <Link href="#pricing" className="hidden sm:block text-sm font-medium text-zinc-500 hover:text-zinc-900 transition-colors">
               Tarifs
             </Link>
             <Link
               href="/inscription"
-              className="group relative inline-flex h-9 items-center justify-center overflow-hidden rounded-full bg-gradient-to-r from-blue-500 to-violet-600 px-5 text-sm font-medium text-white transition-all hover:shadow-lg hover:shadow-blue-500/25"
+              className="inline-flex h-10 items-center gap-2 rounded-full bg-zinc-900 px-5 text-sm font-semibold text-white shadow-lg shadow-zinc-900/10 transition-all hover:scale-105 hover:shadow-xl hover:shadow-zinc-900/20"
             >
-              <span className="relative z-10">Commencer</span>
-              <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-violet-700 opacity-0 transition-opacity group-hover:opacity-100" />
+              Commencer
+              <ArrowRight className="h-3.5 w-3.5" />
             </Link>
           </div>
-        </nav>
-      </header>
+        </div>
+      </nav>
 
       {/* Hero */}
-      <section className="relative flex min-h-screen flex-col items-center justify-center px-4 pt-16">
-        {/* Background effects */}
-        <div className="pointer-events-none absolute inset-0">
-          <div className="absolute left-1/2 top-0 -translate-x-1/2 h-[600px] w-[900px] rounded-full bg-gradient-to-b from-blue-500/20 via-violet-500/10 to-transparent blur-3xl" />
-          <div className="absolute bottom-0 left-0 h-[400px] w-[400px] rounded-full bg-blue-500/5 blur-3xl" />
-          <div className="absolute bottom-0 right-0 h-[400px] w-[400px] rounded-full bg-violet-500/5 blur-3xl" />
-          {/* Grid pattern */}
-          <div
-            className="absolute inset-0 opacity-[0.03]"
-            style={{
-              backgroundImage: `linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)`,
-              backgroundSize: "60px 60px",
-            }}
+      <section className="relative pt-32 pb-20 sm:pt-44 sm:pb-32 px-5">
+        {/* Animated gradient blobs */}
+        <div className="pointer-events-none absolute inset-0 overflow-hidden">
+          <motion.div
+            animate={{ x: [0, 30, 0], y: [0, -20, 0] }}
+            transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+            className="absolute -top-40 -right-40 h-[500px] w-[500px] rounded-full bg-gradient-to-br from-indigo-200/60 to-purple-200/60 blur-3xl"
+          />
+          <motion.div
+            animate={{ x: [0, -20, 0], y: [0, 30, 0] }}
+            transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+            className="absolute -bottom-40 -left-40 h-[500px] w-[500px] rounded-full bg-gradient-to-tr from-pink-200/50 to-orange-200/50 blur-3xl"
+          />
+          <motion.div
+            animate={{ x: [0, 15, 0], y: [0, 15, 0] }}
+            transition={{ duration: 18, repeat: Infinity, ease: "linear" }}
+            className="absolute top-1/3 left-1/2 -translate-x-1/2 h-[300px] w-[300px] rounded-full bg-gradient-to-r from-cyan-200/40 to-blue-200/40 blur-3xl"
           />
         </div>
 
-        <div className="relative z-10 mx-auto max-w-4xl text-center">
+        <div className="relative z-10 mx-auto max-w-5xl text-center">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="mb-8 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-sm text-white/70 backdrop-blur-sm"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5 }}
+            className="mb-6 inline-flex items-center gap-2 rounded-full border border-indigo-200 bg-indigo-50 px-4 py-1.5"
           >
-            <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-green-400" />
+            <Zap className="h-3.5 w-3.5 text-indigo-500" />
+            <span className="text-sm font-semibold text-indigo-600">
+              L&apos;orientation reinventee par l&apos;IA
             </span>
-            Propulse par l&apos;intelligence artificielle
           </motion.div>
 
           <motion.h1
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.1 }}
-            className="mb-6 text-5xl font-bold tracking-tight sm:text-6xl md:text-7xl lg:text-8xl"
+            transition={{ duration: 0.8, delay: 0.1, ease: [0.25, 0.4, 0.25, 1] }}
+            className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tight leading-[0.95]"
           >
-            <span className="block">Ton orientation</span>
-            <span className="mt-2 block bg-gradient-to-r from-blue-400 via-violet-400 to-purple-400 bg-clip-text text-transparent">
-              guidee par l&apos;IA
+            <span className="block text-zinc-900">Trouve ta voie.</span>
+            <span className="mt-2 block bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">
+              L&apos;IA te guide.
             </span>
           </motion.h1>
 
           <motion.p
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="mx-auto mb-10 max-w-2xl text-lg text-white/50 sm:text-xl"
+            transition={{ duration: 0.8, delay: 0.25 }}
+            className="mx-auto mt-8 max-w-xl text-lg sm:text-xl text-zinc-500 leading-relaxed"
           >
-            Discute avec un avatar IA qui comprend tes ambitions, analyse ton profil
-            et te guide vers les meilleures filieres pour ton avenir au Maroc.
+            Parle avec un conseiller IA qui analyse ton profil,
+            recommande les meilleures filieres et postule a ta place.
+            <span className="font-semibold text-zinc-700"> En 30 minutes.</span>
           </motion.p>
 
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
-            className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center"
+            transition={{ duration: 0.8, delay: 0.4 }}
+            className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4"
           >
             <Link
               href="/inscription"
-              className="group relative inline-flex h-14 items-center justify-center gap-2 overflow-hidden rounded-full bg-gradient-to-r from-blue-500 to-violet-600 px-8 text-base font-semibold text-white shadow-2xl shadow-blue-500/25 transition-all hover:shadow-blue-500/40 hover:scale-105"
+              className="group relative inline-flex h-14 items-center gap-2 rounded-2xl bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 px-8 text-base font-bold text-white shadow-xl shadow-indigo-500/25 transition-all hover:scale-105 hover:shadow-2xl hover:shadow-indigo-500/30"
             >
-              <span className="relative z-10 flex items-center gap-2">
-                Commencer gratuitement
-                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-              </span>
-              <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-violet-700 opacity-0 transition-opacity group-hover:opacity-100" />
+              Commencer gratuitement
+              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
             </Link>
             <Link
-              href="#comment-ca-marche"
-              className="inline-flex h-14 items-center justify-center rounded-full border border-white/10 bg-white/5 px-8 text-base font-medium text-white/80 backdrop-blur-sm transition-all hover:bg-white/10 hover:border-white/20"
+              href="#how"
+              className="inline-flex h-14 items-center gap-2 rounded-2xl bg-zinc-100 px-8 text-base font-semibold text-zinc-700 transition-all hover:bg-zinc-200"
             >
-              Decouvrir
+              Comment ca marche ?
             </Link>
           </motion.div>
 
-          {/* Social proof */}
+          {/* Floating badges */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 0.6 }}
-            className="mt-16 flex flex-wrap items-center justify-center gap-8 text-sm text-white/30"
+            transition={{ duration: 1, delay: 0.8 }}
+            className="mt-16 flex flex-wrap items-center justify-center gap-4"
           >
-            <div className="flex items-center gap-2">
-              <div className="flex -space-x-2">
-                {[...Array(4)].map((_, i) => (
-                  <div
-                    key={i}
-                    className="h-8 w-8 rounded-full border-2 border-black bg-gradient-to-br from-blue-400 to-violet-500"
-                  />
-                ))}
-              </div>
-              <span>+500 etudiants orientes</span>
-            </div>
-            <div className="flex items-center gap-1">
-              {[...Array(5)].map((_, i) => (
-                <Star key={i} className="h-4 w-4 fill-yellow-500 text-yellow-500" />
-              ))}
-              <span className="ml-1">4.9/5 satisfaction</span>
-            </div>
+            {[
+              { icon: "🇲🇦", text: "+300K bacheliers/an" },
+              { icon: "🎓", text: "50+ ecoles partenaires" },
+              { icon: "⭐", text: "4.9/5 satisfaction" },
+              { icon: "🌍", text: "5 langues" },
+            ].map((badge, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.9 + i * 0.1 }}
+                className="flex items-center gap-2 rounded-full border border-zinc-200 bg-white px-4 py-2 text-sm font-medium text-zinc-600 shadow-sm"
+              >
+                <span className="text-base">{badge.icon}</span>
+                {badge.text}
+              </motion.div>
+            ))}
           </motion.div>
-        </div>
-
-        {/* Scroll indicator */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.2 }}
-          className="absolute bottom-8 left-1/2 -translate-x-1/2"
-        >
-          <motion.div
-            animate={{ y: [0, 8, 0] }}
-            transition={{ duration: 2, repeat: Infinity }}
-            className="h-12 w-7 rounded-full border border-white/20 p-1"
-          >
-            <div className="h-2 w-full rounded-full bg-white/40" />
-          </motion.div>
-        </motion.div>
-      </section>
-
-      {/* Stats */}
-      <section className="border-y border-white/5 bg-white/[0.02]">
-        <div className="mx-auto grid max-w-6xl grid-cols-2 gap-0 divide-x divide-white/5 sm:grid-cols-4">
-          {[
-            { value: "300K+", label: "Bacheliers/an au Maroc" },
-            { value: "30 min", label: "Session d'orientation" },
-            { value: "5", label: "Langues supportees" },
-            { value: "-3000", label: "MAD avec la Bourse Moujihi" },
-          ].map((stat, i) => (
-            <motion.div
-              key={i}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              custom={i}
-              variants={fadeUp}
-              className="px-6 py-10 text-center"
-            >
-              <div className="text-2xl font-bold sm:text-3xl">
-                <AnimatedCounter value={stat.value} />
-              </div>
-              <div className="mt-1 text-xs text-white/40 sm:text-sm">{stat.label}</div>
-            </motion.div>
-          ))}
         </div>
       </section>
 
-      {/* Comment ca marche */}
-      <section id="comment-ca-marche" className="relative px-4 py-24 sm:py-32">
-        <div className="pointer-events-none absolute left-0 top-1/2 -translate-y-1/2 h-[500px] w-[500px] rounded-full bg-blue-500/5 blur-3xl" />
-
-        <div className="relative z-10 mx-auto max-w-6xl">
+      {/* How it works */}
+      <section id="how" className="px-5 py-20 sm:py-28">
+        <div className="mx-auto max-w-6xl">
           <motion.div
             initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
+            whileInView="show"
+            viewport={{ once: true, margin: "-50px" }}
             custom={0}
-            variants={fadeUp}
+            variants={fadeIn}
             className="mb-16 text-center"
           >
-            <span className="mb-4 inline-block rounded-full border border-blue-500/20 bg-blue-500/10 px-3 py-1 text-xs font-medium text-blue-400">
-              Simple et rapide
+            <span className="inline-block rounded-full bg-emerald-50 border border-emerald-200 px-4 py-1.5 text-sm font-semibold text-emerald-600 mb-4">
+              3 etapes simples
             </span>
-            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight">
               Comment ca marche ?
             </h2>
           </motion.div>
@@ -252,50 +187,52 @@ export default function Home() {
             {[
               {
                 icon: Mic,
-                step: "01",
-                title: "Discute avec Moujihi",
-                desc: "Active ton micro et parle naturellement. L'avatar IA te pose des questions pour comprendre ton profil, tes passions et tes ambitions.",
-                color: "blue",
+                step: "1",
+                title: "Parle a Moujihi",
+                desc: "Active ton micro et discute naturellement avec l'avatar IA. Il comprend le francais, l'arabe, l'anglais, l'espagnol et le tamazight.",
+                color: "indigo",
+                gradient: "from-indigo-500 to-blue-500",
+                bg: "bg-indigo-50",
+                border: "border-indigo-100",
               },
               {
                 icon: FileText,
-                step: "02",
+                step: "2",
                 title: "Recois ton Bilan",
-                desc: "En 30 minutes, Moujihi genere ton Bilan d'Orientation : profil RIASEC, points forts, et domaines recommandes.",
-                color: "violet",
+                desc: "En 30 minutes, decouvre ton profil RIASEC, tes points forts et les domaines faits pour toi dans un bilan personnalise.",
+                color: "purple",
+                gradient: "from-purple-500 to-pink-500",
+                bg: "bg-purple-50",
+                border: "border-purple-100",
               },
               {
                 icon: GraduationCap,
-                step: "03",
-                title: "Postule automatiquement",
-                desc: "Moujihi postule aux ecoles a ta place. Tu recois des alertes quand les inscriptions ouvrent et quand tu es accepte.",
-                color: "emerald",
+                step: "3",
+                title: "Postule en 1 clic",
+                desc: "Moujihi detecte les ouvertures d'inscription, prepare ton dossier et postule aux ecoles automatiquement.",
+                color: "pink",
+                gradient: "from-pink-500 to-orange-500",
+                bg: "bg-pink-50",
+                border: "border-pink-100",
               },
             ].map((item, i) => (
               <motion.div
                 key={i}
                 initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
+                whileInView="show"
+                viewport={{ once: true, margin: "-50px" }}
                 custom={i}
-                variants={scaleIn}
-                className="group relative overflow-hidden rounded-2xl border border-white/5 bg-white/[0.02] p-8 transition-all hover:border-white/10 hover:bg-white/[0.04]"
+                variants={fadeIn}
+                className={`group relative rounded-3xl border ${item.border} ${item.bg} p-8 transition-all hover:shadow-xl hover:shadow-${item.color}-500/5 hover:-translate-y-1`}
               >
-                <div className={`absolute -right-8 -top-8 h-32 w-32 rounded-full bg-${item.color}-500/5 blur-2xl transition-all group-hover:bg-${item.color}-500/10`} />
-                <span className="mb-6 block text-5xl font-bold text-white/5">{item.step}</span>
-                <div className={`mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br ${
-                  item.color === "blue" ? "from-blue-500/20 to-blue-600/20" :
-                  item.color === "violet" ? "from-violet-500/20 to-violet-600/20" :
-                  "from-emerald-500/20 to-emerald-600/20"
-                }`}>
-                  <item.icon className={`h-6 w-6 ${
-                    item.color === "blue" ? "text-blue-400" :
-                    item.color === "violet" ? "text-violet-400" :
-                    "text-emerald-400"
-                  }`} />
+                <div className={`inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br ${item.gradient} shadow-lg mb-6`}>
+                  <item.icon className="h-7 w-7 text-white" />
                 </div>
-                <h3 className="mb-2 text-lg font-semibold">{item.title}</h3>
-                <p className="text-sm leading-relaxed text-white/40">{item.desc}</p>
+                <div className="absolute top-8 right-8 text-7xl font-black text-zinc-900/[0.03]">
+                  {item.step}
+                </div>
+                <h3 className="text-xl font-bold mb-3">{item.title}</h3>
+                <p className="text-zinc-500 leading-relaxed">{item.desc}</p>
               </motion.div>
             ))}
           </div>
@@ -303,79 +240,47 @@ export default function Home() {
       </section>
 
       {/* Features */}
-      <section className="relative border-t border-white/5 bg-white/[0.01] px-4 py-24 sm:py-32">
-        <div className="pointer-events-none absolute right-0 top-0 h-[500px] w-[500px] rounded-full bg-violet-500/5 blur-3xl" />
-
-        <div className="relative z-10 mx-auto max-w-6xl">
+      <section id="features" className="px-5 py-20 sm:py-28 bg-zinc-50">
+        <div className="mx-auto max-w-6xl">
           <motion.div
             initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
+            whileInView="show"
+            viewport={{ once: true, margin: "-50px" }}
             custom={0}
-            variants={fadeUp}
+            variants={fadeIn}
             className="mb-16 text-center"
           >
-            <span className="mb-4 inline-block rounded-full border border-violet-500/20 bg-violet-500/10 px-3 py-1 text-xs font-medium text-violet-400">
-              Tout-en-un
+            <span className="inline-block rounded-full bg-purple-50 border border-purple-200 px-4 py-1.5 text-sm font-semibold text-purple-600 mb-4">
+              Tout ce qu&apos;il te faut
             </span>
-            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
-              Pourquoi Moujihi ?
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight">
+              Une plateforme complete
             </h2>
           </motion.div>
 
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {[
-              {
-                icon: Brain,
-                title: "IA conversationnelle",
-                desc: "Pas de formulaire ennuyeux. Une vraie conversation avec un avatar qui t'ecoute et te comprend.",
-                gradient: "from-blue-500 to-cyan-500",
-              },
-              {
-                icon: Globe,
-                title: "5 langues",
-                desc: "Parle en francais, arabe, anglais, espagnol ou tamazight. Moujihi s'adapte a ta langue.",
-                gradient: "from-violet-500 to-purple-500",
-              },
-              {
-                icon: Shield,
-                title: "Bourse Moujihi",
-                desc: "Economise 2 000 a 5 000 MAD sur tes frais de scolarite grace aux avantages exclusifs.",
-                gradient: "from-emerald-500 to-green-500",
-              },
-              {
-                icon: TrendingUp,
-                title: "Moujihi Predict",
-                desc: "Decouvre tes chances d'etre accepte dans chaque ecole en temps reel.",
-                gradient: "from-orange-500 to-amber-500",
-              },
-              {
-                icon: Users,
-                title: "Communaute",
-                desc: "Rejoins des cercles d'etudiants comme toi. Echange, partage, et progresse ensemble.",
-                gradient: "from-pink-500 to-rose-500",
-              },
-              {
-                icon: Sparkles,
-                title: "Candidature auto",
-                desc: "Moujihi detecte les ouvertures d'inscription et postule a ta place. Zero stress.",
-                gradient: "from-blue-500 to-violet-500",
-              },
-            ].map((feature, i) => (
+              { icon: Brain, title: "IA conversationnelle", desc: "Un vrai echange naturel, pas un formulaire. L'avatar te comprend et s'adapte.", gradient: "from-indigo-500 to-blue-500" },
+              { icon: Globe, title: "5 langues", desc: "Francais, arabe, anglais, espagnol, tamazight. Parle dans ta langue.", gradient: "from-emerald-500 to-teal-500" },
+              { icon: Shield, title: "Bourse Moujihi", desc: "Economise jusqu'a 5 000 MAD sur tes frais de scolarite. Exclusif Moujihi.", gradient: "from-orange-500 to-amber-500" },
+              { icon: TrendingUp, title: "Predict", desc: "Decouvre tes chances d'etre accepte dans chaque ecole, en temps reel.", gradient: "from-pink-500 to-rose-500" },
+              { icon: Users, title: "Communaute", desc: "Retrouve tes camarades, echange avec des etudiants deja inscrits.", gradient: "from-purple-500 to-violet-500" },
+              { icon: Zap, title: "Candidature auto", desc: "Moujihi surveille, prepare et envoie tes dossiers. Zero effort.", gradient: "from-cyan-500 to-blue-500" },
+            ].map((f, i) => (
               <motion.div
                 key={i}
                 initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
+                whileInView="show"
+                viewport={{ once: true, margin: "-50px" }}
                 custom={i}
-                variants={scaleIn}
-                className="group rounded-2xl border border-white/5 bg-white/[0.02] p-6 transition-all hover:border-white/10 hover:bg-white/[0.04]"
+                variants={fadeIn}
+                className="group rounded-3xl border border-zinc-200 bg-white p-7 transition-all hover:shadow-lg hover:-translate-y-1 hover:border-zinc-300"
               >
-                <div className={`mb-4 inline-flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br ${feature.gradient} shadow-lg`}>
-                  <feature.icon className="h-5 w-5 text-white" />
+                <div className={`inline-flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br ${f.gradient} shadow-md mb-4`}>
+                  <f.icon className="h-5 w-5 text-white" />
                 </div>
-                <h3 className="mb-2 font-semibold">{feature.title}</h3>
-                <p className="text-sm leading-relaxed text-white/40">{feature.desc}</p>
+                <h3 className="font-bold text-lg mb-2">{f.title}</h3>
+                <p className="text-sm text-zinc-500 leading-relaxed">{f.desc}</p>
               </motion.div>
             ))}
           </div>
@@ -383,28 +288,24 @@ export default function Home() {
       </section>
 
       {/* Pricing */}
-      <section id="pricing" className="relative px-4 py-24 sm:py-32">
-        <div className="pointer-events-none absolute inset-0">
-          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-[600px] w-[800px] rounded-full bg-gradient-to-r from-blue-500/5 via-violet-500/10 to-purple-500/5 blur-3xl" />
-        </div>
-
-        <div className="relative z-10 mx-auto max-w-5xl">
+      <section id="pricing" className="px-5 py-20 sm:py-28">
+        <div className="mx-auto max-w-5xl">
           <motion.div
             initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
+            whileInView="show"
+            viewport={{ once: true, margin: "-50px" }}
             custom={0}
-            variants={fadeUp}
+            variants={fadeIn}
             className="mb-16 text-center"
           >
-            <span className="mb-4 inline-block rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1 text-xs font-medium text-emerald-400">
-              Tarifs transparents
+            <span className="inline-block rounded-full bg-amber-50 border border-amber-200 px-4 py-1.5 text-sm font-semibold text-amber-600 mb-4">
+              Pas d&apos;abonnement
             </span>
-            <h2 className="mb-4 text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
-              Un seul paiement, zero surprise
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight mb-4">
+              Un seul paiement. C&apos;est tout.
             </h2>
-            <p className="mx-auto max-w-xl text-white/40">
-              Valable toute la saison (mars — septembre). 10x moins cher qu&apos;un conseiller prive.
+            <p className="mx-auto max-w-lg text-zinc-500 text-lg">
+              Valable toute la saison mars — septembre. 10x moins cher qu&apos;un conseiller prive.
             </p>
           </motion.div>
 
@@ -413,87 +314,71 @@ export default function Home() {
               {
                 name: "Essentiel",
                 price: "199",
-                desc: "Pour decouvrir ton profil",
-                features: [
-                  "Session d'orientation 30 min",
-                  "Bilan d'Orientation PDF",
-                  "Profil RIASEC complet",
-                  "Acces parent",
-                ],
-                cta: "Commencer",
+                desc: "Decouvre ton profil",
+                features: ["Session 30 min avec l'avatar IA", "Bilan d'Orientation PDF", "Profil RIASEC complet", "Acces parent"],
                 highlighted: false,
+                gradient: "",
               },
               {
                 name: "Premium",
                 price: "499",
-                desc: "Pour postuler aux ecoles",
-                features: [
-                  "Tout dans Essentiel",
-                  "Noms des ecoles recommandees",
-                  "Candidatures auto (10 ecoles)",
-                  "Alertes inscriptions",
-                  "Bourse Moujihi",
-                ],
-                cta: "Choisir Premium",
+                desc: "Postule aux ecoles",
+                features: ["Tout dans Essentiel", "Ecoles recommandees par nom", "10 candidatures automatiques", "Alertes inscriptions", "Bourse Moujihi"],
                 highlighted: true,
+                gradient: "from-indigo-500 via-purple-500 to-pink-500",
               },
               {
                 name: "Illimite",
                 price: "799",
-                desc: "Pour maximiser tes chances",
-                features: [
-                  "Tout dans Premium",
-                  "Candidatures illimitees",
-                  "Suivi prioritaire",
-                  "Relance auto dossier",
-                ],
-                cta: "Choisir Illimite",
+                desc: "Maximise tes chances",
+                features: ["Tout dans Premium", "Candidatures illimitees", "Suivi prioritaire", "Relance auto dossier"],
                 highlighted: false,
+                gradient: "",
               },
             ].map((plan, i) => (
               <motion.div
                 key={i}
                 initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
+                whileInView="show"
+                viewport={{ once: true, margin: "-50px" }}
                 custom={i}
-                variants={scaleIn}
-                className={`relative flex flex-col overflow-hidden rounded-2xl border p-8 transition-all ${
+                variants={fadeIn}
+                className={`relative flex flex-col rounded-3xl p-8 transition-all ${
                   plan.highlighted
-                    ? "border-blue-500/30 bg-gradient-to-b from-blue-500/10 via-violet-500/5 to-transparent shadow-2xl shadow-blue-500/10 scale-105"
-                    : "border-white/5 bg-white/[0.02] hover:border-white/10"
+                    ? "bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 text-white shadow-2xl shadow-purple-500/20 sm:scale-105 sm:-my-4"
+                    : "border border-zinc-200 bg-white hover:shadow-lg hover:border-zinc-300"
                 }`}
               >
                 {plan.highlighted && (
-                  <div className="absolute -right-12 top-6 rotate-45 bg-gradient-to-r from-blue-500 to-violet-600 px-12 py-1 text-xs font-semibold text-white">
-                    Populaire
-                  </div>
+                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-amber-400 px-4 py-1 text-xs font-bold text-amber-900 shadow-lg">
+                    Le + populaire
+                  </span>
                 )}
                 <div className="mb-6">
-                  <h3 className="text-lg font-semibold">{plan.name}</h3>
-                  <p className="text-sm text-white/40">{plan.desc}</p>
+                  <h3 className={`text-xl font-bold ${plan.highlighted ? "text-white" : ""}`}>{plan.name}</h3>
+                  <p className={`text-sm mt-1 ${plan.highlighted ? "text-white/70" : "text-zinc-400"}`}>{plan.desc}</p>
                 </div>
-                <div className="mb-6">
-                  <span className="text-4xl font-bold">{plan.price}</span>
-                  <span className="ml-1 text-white/40">MAD</span>
+                <div className="mb-8">
+                  <span className="text-5xl font-black">{plan.price}</span>
+                  <span className={`ml-1 text-lg ${plan.highlighted ? "text-white/60" : "text-zinc-400"}`}>MAD</span>
                 </div>
                 <ul className="mb-8 flex-1 space-y-3">
                   {plan.features.map((f, j) => (
-                    <li key={j} className="flex items-start gap-2 text-sm text-white/60">
-                      <Check className={`mt-0.5 h-4 w-4 flex-shrink-0 ${plan.highlighted ? "text-blue-400" : "text-white/20"}`} />
-                      {f}
+                    <li key={j} className="flex items-start gap-3 text-sm">
+                      <Check className={`mt-0.5 h-4 w-4 flex-shrink-0 ${plan.highlighted ? "text-white" : "text-indigo-500"}`} />
+                      <span className={plan.highlighted ? "text-white/90" : "text-zinc-600"}>{f}</span>
                     </li>
                   ))}
                 </ul>
                 <Link
                   href="/inscription"
-                  className={`inline-flex h-12 items-center justify-center rounded-full text-sm font-semibold transition-all ${
+                  className={`inline-flex h-12 items-center justify-center rounded-2xl text-sm font-bold transition-all hover:scale-105 ${
                     plan.highlighted
-                      ? "bg-gradient-to-r from-blue-500 to-violet-600 text-white shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 hover:scale-105"
-                      : "border border-white/10 bg-white/5 text-white hover:bg-white/10"
+                      ? "bg-white text-indigo-600 shadow-lg hover:shadow-xl"
+                      : "bg-zinc-900 text-white shadow-md hover:shadow-lg"
                   }`}
                 >
-                  {plan.cta}
+                  Commencer
                 </Link>
               </motion.div>
             ))}
@@ -501,61 +386,58 @@ export default function Home() {
 
           <motion.p
             initial="hidden"
-            whileInView="visible"
+            whileInView="show"
             viewport={{ once: true }}
             custom={0}
-            variants={fadeUp}
-            className="mt-8 text-center text-sm text-white/30"
+            variants={fadeIn}
+            className="mt-10 text-center text-sm text-zinc-400"
           >
-            Garantie &quot;oriente ou rembourse&quot; sur le pack Essentiel
+            Garantie &quot;oriente ou rembourse&quot; sur tous les packs.
+            Paiement par carte bancaire ou Mobile Money.
           </motion.p>
         </div>
       </section>
 
-      {/* CTA Final */}
-      <section className="relative border-t border-white/5 px-4 py-24 sm:py-32">
-        <div className="pointer-events-none absolute inset-0">
-          <div className="absolute left-1/2 bottom-0 -translate-x-1/2 h-[400px] w-[600px] rounded-full bg-gradient-to-t from-blue-500/10 to-transparent blur-3xl" />
-        </div>
-
+      {/* CTA */}
+      <section className="px-5 py-20 sm:py-28">
         <motion.div
           initial="hidden"
-          whileInView="visible"
+          whileInView="show"
           viewport={{ once: true }}
           custom={0}
-          variants={fadeUp}
-          className="relative z-10 mx-auto max-w-2xl text-center"
+          variants={fadeIn}
+          className="mx-auto max-w-4xl rounded-[2rem] bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 p-12 sm:p-16 text-center shadow-2xl shadow-purple-500/20"
         >
-          <h2 className="mb-4 text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tight mb-6">
             Pret a construire ton avenir ?
           </h2>
-          <p className="mb-8 text-lg text-white/40">
-            Rejoins les etudiants qui ont deja trouve leur voie grace a Moujihi.
+          <p className="text-lg text-white/70 mb-10 max-w-lg mx-auto">
+            Rejoins des milliers d&apos;etudiants qui ont deja trouve leur voie grace a Moujihi.
           </p>
           <Link
             href="/inscription"
-            className="group relative inline-flex h-14 items-center justify-center gap-2 overflow-hidden rounded-full bg-gradient-to-r from-blue-500 to-violet-600 px-10 text-base font-semibold text-white shadow-2xl shadow-blue-500/25 transition-all hover:shadow-blue-500/40 hover:scale-105"
+            className="group inline-flex h-14 items-center gap-2 rounded-2xl bg-white px-10 text-base font-bold text-indigo-600 shadow-xl transition-all hover:scale-105 hover:shadow-2xl"
           >
-            <span className="relative z-10 flex items-center gap-2">
-              Commencer maintenant
-              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-            </span>
+            Commencer maintenant
+            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
           </Link>
         </motion.div>
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-white/5 px-4 py-8">
-        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 text-sm text-white/30 sm:flex-row">
+      <footer className="border-t border-zinc-100 px-5 py-10">
+        <div className="mx-auto flex max-w-6xl flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
-            <div className="flex h-6 w-6 items-center justify-center rounded-md bg-gradient-to-br from-blue-500 to-violet-600">
-              <Sparkles className="h-3 w-3 text-white" />
+            <div className="h-7 w-7 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center">
+              <Sparkles className="h-3.5 w-3.5 text-white" />
             </div>
-            <span>Moujihi — Orientation post-bac propulsee par l&apos;IA</span>
+            <span className="text-sm font-semibold text-zinc-400">
+              Moujihi — Orientation post-bac propulsee par l&apos;IA
+            </span>
           </div>
-          <div className="flex gap-6">
-            <Link href="#pricing" className="hover:text-white/60 transition-colors">Tarifs</Link>
-            <Link href="/ecoles-partenaires" className="hover:text-white/60 transition-colors">Ecoles partenaires</Link>
+          <div className="flex gap-6 text-sm text-zinc-400">
+            <Link href="#pricing" className="hover:text-zinc-600 transition-colors">Tarifs</Link>
+            <Link href="/ecoles-partenaires" className="hover:text-zinc-600 transition-colors">Ecoles</Link>
           </div>
         </div>
       </footer>
@@ -571,8 +453,6 @@ export default function Home() {
             alternateName: "موجهي",
             url: "https://moujihi.ma",
             description: "Plateforme d'orientation post-bac propulsee par l'IA pour les bacheliers marocains",
-            foundingDate: "2026",
-            areaServed: { "@type": "Country", name: "Morocco" },
           }),
         }}
       />
