@@ -228,7 +228,5 @@ func (s *Service) GetReport(ctx context.Context, sessionID string) ([]byte, erro
 		return nil, fmt.Errorf("session not completed yet")
 	}
 
-	// TODO: Generate PDF with wkhtmltopdf from HTML template
-	// For now, return the profile JSON as a placeholder
-	return session.StudentProfile, nil
+	return GenerateReportHTML(session)
 }

@@ -131,20 +131,20 @@ func (h *Handler) Complete(c *fiber.Ctx) error {
 
 func (h *Handler) GetReport(c *fiber.Ctx) error {
 	sessionID := c.Params("id")
+	format := c.Query("format")
 
-	report, err := h.service.GetReport(c.Context(), sessionID)
-	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"error": "Failed to generate report",
-		})
-	}
-
-	if c.Query("format") == "pdf" {
-		c.Set("Content-Type", "application/pdf")
-		c.Set("Content-Disposition", "attachment; filename=bilan-moujihi.pdf")
+	if format == "html" {
+		report, err := h.service.GetReport(c.Context(), sessionID)
+		if err != nil {
+			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+				"error": "Failed to generate report",
+			})
+		}
+		c.Set("Content-Type", "text/html; charset=utf-8")
 		return c.Send(report)
 	}
 
+	// Default: return session JSON for the frontend
 	session, err := h.service.GetSession(c.Context(), sessionID)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
