@@ -1,61 +1,52 @@
-"use client";
+import { Marquee } from "@/components/ui/marquee";
+import { cn } from "@/lib/utils";
 
 const schools = [
-  { name: "ENSA", color: "#F7AABE" },
-  { name: "ENCG", color: "#B57CEC" },
-  { name: "UIR", color: "#E472D1" },
-  { name: "UM6P", color: "#9560EB" },
-  { name: "EMSI", color: "#A46EDB" },
-  { name: "FST", color: "#B48CDE" },
+  "ENSA",
+  "ENCG",
+  "UIR",
+  "UM6P",
+  "EMSI",
+  "FST",
+  "EHTP",
+  "INPT",
+  "EMI",
+  "ENSIAS",
 ];
 
-export const LogoTicker = () => {
+function SchoolBadge({ name }: { name: string }) {
   return (
-    <div className="bg-black text-white py-[72px] sm:py-24">
-      <div className="container mx-auto px-4">
-        <h2 className="text-lg text-center text-white/70 mb-16">
-          Les écoles qui font confiance à Moujihi
-        </h2>
-        <div className="w-full inline-flex flex-nowrap overflow-hidden [mask-image:_linear-gradient(to_right,transparent_0,_black_128px,_black_calc(100%-128px),transparent_100%)]">
-          <ul className="flex items-center justify-center md:justify-start [&_li]:mx-8 animate-infinite-scroll">
-            {[...schools, ...schools].map((school, index) => (
-              <li key={index} className="flex-shrink-0">
-                <div
-                  className="flex items-center justify-center h-14 px-8 rounded-xl border border-white/20 bg-white/5"
-                  style={{ minWidth: "140px" }}
-                >
-                  <span
-                    className="text-xl font-bold"
-                    style={{ color: school.color }}
-                  >
-                    {school.name}
-                  </span>
-                </div>
-              </li>
-            ))}
-          </ul>
-          <ul
-            className="flex items-center justify-center md:justify-start [&_li]:mx-8 animate-infinite-scroll"
-            aria-hidden="true"
-          >
-            {[...schools, ...schools].map((school, index) => (
-              <li key={index} className="flex-shrink-0">
-                <div
-                  className="flex items-center justify-center h-14 px-8 rounded-xl border border-white/20 bg-white/5"
-                  style={{ minWidth: "140px" }}
-                >
-                  <span
-                    className="text-xl font-bold"
-                    style={{ color: school.color }}
-                  >
-                    {school.name}
-                  </span>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
+    <div className="flex items-center rounded-full border border-white/[0.05] bg-white/[0.03] px-5 py-2">
+      <span className="text-sm font-medium text-white/40">{name}</span>
     </div>
   );
-};
+}
+
+export function LogoTicker() {
+  return (
+    <section className="relative py-16">
+      <div className="mx-auto mb-8 max-w-7xl px-6">
+        <p className="text-center text-xs font-medium uppercase tracking-widest text-white/30">
+          Écoles partenaires
+        </p>
+      </div>
+      <div className="relative">
+        {/* Fade edges */}
+        <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-gradient-to-r from-[#050505] to-transparent" />
+        <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 bg-gradient-to-l from-[#050505] to-transparent" />
+
+        <Marquee pauseOnHover className="[--duration:30s]">
+          {schools.map((school) => (
+            <SchoolBadge key={school} name={school} />
+          ))}
+        </Marquee>
+
+        <Marquee reverse pauseOnHover className="mt-3 [--duration:30s]">
+          {[...schools].reverse().map((school) => (
+            <SchoolBadge key={school} name={school} />
+          ))}
+        </Marquee>
+      </div>
+    </section>
+  );
+}

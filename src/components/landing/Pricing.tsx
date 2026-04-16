@@ -1,122 +1,138 @@
 "use client";
 
 import Link from "next/link";
+import { Check } from "lucide-react";
+import { BorderBeam } from "@/components/ui/border-beam";
+import { cn } from "@/lib/utils";
 
-interface PricingCardProps {
-  popular?: boolean;
-  planName: string;
+interface Plan {
+  name: string;
   price: number;
-  planDescription: string;
+  popular?: boolean;
   features: string[];
 }
 
-function PricingCard(props: PricingCardProps) {
+const plans: Plan[] = [
+  {
+    name: "Essentiel",
+    price: 199,
+    features: [
+      "Session 30 min",
+      "Bilan PDF",
+      "Profil RIASEC",
+      "Accès parent",
+    ],
+  },
+  {
+    name: "Premium",
+    price: 499,
+    popular: true,
+    features: [
+      "Tout dans Essentiel",
+      "Noms des écoles",
+      "10 candidatures auto",
+      "Alertes inscriptions",
+      "Bourse Moujihi",
+    ],
+  },
+  {
+    name: "Illimité",
+    price: 799,
+    features: [
+      "Tout dans Premium",
+      "Candidatures illimitées",
+      "Suivi prioritaire",
+      "Relance auto",
+    ],
+  },
+];
+
+function PricingCard({ plan }: { plan: Plan }) {
   return (
-    <div className="h-full">
-      <div className="relative flex flex-col h-full p-6 rounded-2xl bg-black border border-white/30 shadow shadow-black/80">
-        {props.popular && (
-          <div className="absolute top-0 right-0 mr-6 -mt-4">
-            <div className="inline-flex items-center text-xs font-semibold py-1.5 px-3 bg-emerald-500 text-white rounded-full shadow-sm shadow-slate-950/5">
+    <div
+      className={cn(
+        "relative flex flex-col rounded-3xl border p-8",
+        plan.popular
+          ? "scale-105 border-white/[0.1] bg-white/[0.05]"
+          : "border-white/[0.05] bg-white/[0.03]"
+      )}
+    >
+      {plan.popular && (
+        <>
+          <BorderBeam
+            size={150}
+            duration={8}
+            colorFrom="#3B82F6"
+            colorTo="#7C3AED"
+            borderWidth={1}
+          />
+          <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+            <span className="rounded-full bg-gradient-to-r from-blue-500 to-violet-600 px-4 py-1 text-xs font-semibold text-white">
               Populaire
-            </div>
-          </div>
-        )}
-        <div className="mb-5">
-          <div className="text-white/70 font-semibold mb-1">
-            {props.planName}
-          </div>
-          <div className="inline-flex items-baseline mb-2">
-            <span className="text-white/50 font-bold text-4xl">
-              {props.price}
             </span>
-            <span className="text-white/70 font-medium ml-1">MAD</span>
           </div>
-          <div className="text-sm text-white/70 mb-5">
-            {props.planDescription}
-          </div>
-          <Link
-            href="/inscription"
-            className="w-full inline-flex justify-center whitespace-nowrap rounded-lg bg-[#5D2CA8] px-3.5 py-2.5 text-sm font-medium text-white shadow-sm shadow-indigo-950/10 hover:bg-[#5D2CA2] focus-visible:outline-none focus-visible:ring focus-visible:ring-slate-600 transition-colors duration-150"
-          >
-            Choisir ce plan
-          </Link>
-        </div>
-        <div className="text-slate-200 font-medium mb-3">Inclus :</div>
-        <ul className="text-slate-400 text-sm space-y-3 grow">
-          {props.features.map((feature, index) => (
-            <li key={index} className="flex items-center">
-              <svg
-                className="w-3 h-3 fill-emerald-500 mr-3 shrink-0"
-                viewBox="0 0 12 12"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path d="M10.28 2.28L3.989 8.575 1.695 6.28A1 1 0 00.28 7.695l3 3a1 1 0 001.414 0l7-7A1 1 0 0010.28 2.28z" />
-              </svg>
-              <span>{feature}</span>
-            </li>
-          ))}
-        </ul>
+        </>
+      )}
+
+      <h3 className="text-lg font-semibold text-white">{plan.name}</h3>
+
+      <div className="mt-4 flex items-baseline gap-1">
+        <span className="text-4xl font-bold text-white">{plan.price}</span>
+        <span className="text-sm text-white/40">MAD</span>
+      </div>
+
+      <p className="mt-1 text-xs text-white/30">Un seul paiement. Pas d&apos;abonnement.</p>
+
+      <ul className="mt-8 flex flex-col gap-3">
+        {plan.features.map((feature) => (
+          <li key={feature} className="flex items-center gap-3 text-sm text-white/70">
+            <Check className="h-4 w-4 shrink-0 text-blue-400" />
+            {feature}
+          </li>
+        ))}
+      </ul>
+
+      <div className="mt-auto pt-8">
+        <Link
+          href="/inscription"
+          className={cn(
+            "flex h-11 w-full items-center justify-center rounded-xl text-sm font-semibold transition-all",
+            plan.popular
+              ? "bg-gradient-to-r from-blue-500 to-violet-600 text-white shadow-[0_0_20px_rgba(59,130,246,0.3)] hover:shadow-[0_0_30px_rgba(59,130,246,0.5)]"
+              : "border border-white/10 text-white/70 hover:border-white/20 hover:text-white"
+          )}
+        >
+          Commencer
+        </Link>
       </div>
     </div>
   );
 }
 
-export const Pricing = () => {
+export function Pricing() {
   return (
-    <div
-      id="tarifs"
-      className="bg-black text-white bg-gradient-to-b from-black via-[#5D2CA8] to-black py-[72px] sm:py-24"
-    >
-      <div className="container mx-auto px-4">
-        <h2 className="text-center font-bold text-5xl sm:text-6xl tracking-tighter">
-          Choisis ta formule
-        </h2>
-        <div className="max-w-xl mx-auto">
-          <p className="text-center mt-5 text-xl text-white/70">
-            Un paiement unique. Pas d&apos;abonnement. 10x moins cher qu&apos;un
-            conseiller privé.
+    <section id="pricing" className="relative py-24">
+      <div className="mx-auto max-w-7xl px-6">
+        {/* Header */}
+        <div className="mx-auto mb-16 max-w-2xl text-center">
+          <p className="mb-3 text-xs font-medium uppercase tracking-widest text-blue-400">
+            Tarifs
+          </p>
+          <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl md:text-5xl">
+            Un investissement, pas une dépense
+          </h2>
+          <p className="mt-4 text-base text-white/50">
+            10x moins cher qu&apos;un conseiller privé. Un seul paiement.
           </p>
         </div>
-        <div className="max-w-sm mx-auto grid gap-6 lg:grid-cols-3 items-start lg:max-w-none px-0 sm:px-24 py-[72px] sm:py-24">
-          <PricingCard
-            planName="Essentiel"
-            price={199}
-            planDescription="Bilan d'orientation complet avec domaines recommandés et rapport PDF."
-            features={[
-              "Session IA de 30 minutes",
-              "Profil RIASEC complet",
-              "Bilan PDF téléchargeable",
-              "Accès espace parent",
-            ]}
-          />
-          <PricingCard
-            popular={true}
-            planName="Premium"
-            price={499}
-            planDescription="Orientation + candidatures automatiques aux écoles recommandées."
-            features={[
-              "Tout de l'Essentiel",
-              "Noms des écoles recommandées",
-              "Jusqu'à 10 candidatures auto",
-              "Alertes inscriptions WhatsApp",
-              "Bourse Moujihi exclusive",
-            ]}
-          />
-          <PricingCard
-            planName="Illimité"
-            price={799}
-            planDescription="Orientation complète + candidatures illimitées + suivi prioritaire."
-            features={[
-              "Tout du Premium",
-              "Candidatures illimitées",
-              "Suivi prioritaire",
-              "Relance auto si dossier incomplet",
-              "Moujihi Predict avancé",
-              "Support dédié",
-            ]}
-          />
+
+        {/* Cards */}
+        <div className="mx-auto grid max-w-4xl gap-6 md:grid-cols-3">
+          {plans.map((plan) => (
+            <PricingCard key={plan.name} plan={plan} />
+          ))}
         </div>
       </div>
-    </div>
+    </section>
   );
-};
+}

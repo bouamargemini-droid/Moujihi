@@ -1,89 +1,108 @@
 "use client";
 
 import { useState } from "react";
-import { Plus, Minus } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Plus, Minus } from "lucide-react";
 
-const items = [
+interface FAQItem {
+  question: string;
+  answer: string;
+}
+
+const faqs: FAQItem[] = [
   {
-    question: "Comment fonctionne l'orientation IA de Moujihi ?",
+    question: "C'est quoi Moujihi ?",
     answer:
-      "Tu discutes pendant 30 minutes avec un conseiller IA via vidéo. Il analyse ton profil scolaire, tes centres d'intérêt et tes ambitions pour te recommander les meilleures filières et écoles. Tout se passe naturellement, comme une vraie conversation.",
+      "Moujihi est une plateforme d'orientation post-bac propulsée par l'IA. Tu discutes avec un conseiller virtuel qui analyse ton profil, tes passions et tes notes pour te recommander les meilleures filières et écoles. Ensuite, Moujihi peut postuler automatiquement à ta place.",
   },
   {
-    question: "Moujihi postule vraiment à ma place ?",
+    question: "Comment fonctionne la session d'orientation ?",
     answer:
-      "Oui ! Avec les packs Premium et Illimité, Moujihi surveille les ouvertures d'inscriptions, prépare ton dossier et soumet tes candidatures automatiquement aux écoles que tu as sélectionnées. Tu reçois des notifications WhatsApp à chaque étape.",
+      "Tu lances une session de 30 minutes avec un avatar IA. Il te pose des questions naturelles sur ton parcours, tes intérêts et tes ambitions. En arrière-plan, l'IA calcule ton profil RIASEC et génère un bilan personnalisé avec des recommandations de filières.",
   },
   {
-    question: "C'est quoi la Bourse Moujihi ?",
+    question: "Quelles langues sont supportées ?",
     answer:
-      "La Bourse Moujihi est une réduction exclusive de 2 000 à 5 000 MAD sur les frais de scolarité des écoles partenaires. Elle est réservée aux étudiants qui postulent via Moujihi. C'est un avantage financier que tu ne trouves nulle part ailleurs.",
+      "Moujihi supporte 5 langues : français, arabe (darija et fusha), anglais, espagnol et tamazight. Tu peux parler dans la langue avec laquelle tu es le plus à l'aise.",
   },
   {
-    question: "Est-ce que mes données sont en sécurité ?",
+    question: "Comment fonctionne la candidature automatique ?",
     answer:
-      "Absolument. Toutes tes données personnelles (CIN, Code Massar) sont chiffrées avec AES-256. Nous sommes conformes à la loi 09-08 de protection des données au Maroc. Tes informations ne sont jamais partagées sans ton consentement.",
+      "Moujihi détecte l'ouverture des inscriptions pour les écoles que tu as sélectionnées. Il prépare ton dossier automatiquement à partir de ton profil et de tes documents, puis soumet la candidature. Tu reçois une notification à chaque étape.",
   },
 ];
 
-const AccordionItem = ({
-  question,
-  answer,
-}: {
-  question: string;
-  answer: string;
-}) => {
-  const [isOpen, setIsOpen] = useState(false);
+function FAQAccordionItem({ item, isOpen, onToggle }: {
+  item: FAQItem;
+  isOpen: boolean;
+  onToggle: () => void;
+}) {
   return (
-    <div
-      className="py-7 border-b border-white/30 cursor-pointer"
-      onClick={() => setIsOpen(!isOpen)}
-    >
-      <div className="flex items-center">
-        <span className="flex-1 text-lg font-bold">{question}</span>
-        {isOpen ? (
-          <Minus className="w-5 h-5 text-[#A46EDB] flex-shrink-0" />
-        ) : (
-          <Plus className="w-5 h-5 text-[#A46EDB] flex-shrink-0" />
-        )}
-      </div>
-      <AnimatePresence>
+    <div className="rounded-2xl border border-white/[0.05] bg-white/[0.02]">
+      <button
+        onClick={onToggle}
+        className="flex w-full items-center justify-between px-6 py-5 text-left"
+      >
+        <span className="pr-4 text-base font-medium text-white">
+          {item.question}
+        </span>
+        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-white/10">
+          {isOpen ? (
+            <Minus className="h-4 w-4 text-white/60" />
+          ) : (
+            <Plus className="h-4 w-4 text-white/60" />
+          )}
+        </div>
+      </button>
+      <AnimatePresence initial={false}>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, height: 0, marginTop: 0 }}
-            animate={{ opacity: 1, height: "auto", marginTop: "16px" }}
-            exit={{ opacity: 0, height: 0, marginTop: 0 }}
-            className="text-white/70"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+            className="overflow-hidden"
           >
-            {answer}
+            <div className="px-6 pb-5 text-sm leading-relaxed text-white/50">
+              {item.answer}
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
     </div>
   );
-};
+}
 
-export const FAQs = () => {
+export function FAQs() {
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+
   return (
-    <div
-      id="faq"
-      className="bg-black text-white py-[72px] sm:py-24 bg-gradient-to-b from-[#5D2CA8] to-black"
-    >
-      <div className="container mx-auto px-4">
-        <h2 className="text-5xl sm:text-6xl sm:w-[648px] mx-auto text-center text-white tracking-tighter font-bold">
-          Questions fréquentes
-        </h2>
-        <div className="mt-12 max-w-[648px] mx-auto">
-          {items.map(({ question, answer }) => (
-            <AccordionItem
-              question={question}
-              answer={answer}
-              key={question}
+    <section id="faq" className="relative py-24">
+      <div className="mx-auto max-w-3xl px-6">
+        {/* Header */}
+        <div className="mb-12 text-center">
+          <p className="mb-3 text-xs font-medium uppercase tracking-widest text-blue-400">
+            FAQ
+          </p>
+          <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
+            Questions fréquentes
+          </h2>
+        </div>
+
+        {/* Accordion */}
+        <div className="flex flex-col gap-3">
+          {faqs.map((faq, index) => (
+            <FAQAccordionItem
+              key={index}
+              item={faq}
+              isOpen={openIndex === index}
+              onToggle={() =>
+                setOpenIndex(openIndex === index ? null : index)
+              }
             />
           ))}
         </div>
       </div>
-    </div>
+    </section>
   );
-};
+}

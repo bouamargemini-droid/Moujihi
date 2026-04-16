@@ -2,106 +2,101 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
+import { cn } from "@/lib/utils";
 
-export const Navbar = () => {
+const navLinks = [
+  { label: "Fonctionnalités", href: "#features" },
+  { label: "Tarifs", href: "#pricing" },
+  { label: "FAQ", href: "#faq" },
+];
+
+export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <div className="bg-black">
-      <div className="px-4">
-        <div className="container mx-auto bg-black">
-          <div className="py-4 flex items-center justify-between">
-            <div className="relative">
-              <div className="absolute w-full top-2 bottom-0 bg-[linear-gradient(to_right,#F7AABE,#B57CEC,#E472D1)] blur-md" />
-              {/* Logo Moujihi */}
-              <div className="relative h-12 w-12 rounded-xl bg-gradient-to-br from-[#9560EB] to-[#E472D1] flex items-center justify-center">
-                <span className="text-white font-bold text-xl">M</span>
-              </div>
+    <>
+      <nav className="fixed top-0 left-0 right-0 z-50 border-b border-white/5 bg-black/50 backdrop-blur-xl">
+        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
+          {/* Logo */}
+          <Link href="/" className="flex items-center gap-2.5">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-blue-500 to-violet-600">
+              <span className="text-sm font-bold text-white">M</span>
             </div>
+            <span className="text-lg font-semibold text-white">Moujihi</span>
+          </Link>
 
-            <button
-              className="border border-white border-opacity-30 h-10 w-10 inline-flex justify-center items-center rounded-lg sm:hidden"
-              onClick={() => setMobileOpen(!mobileOpen)}
-            >
-              {mobileOpen ? (
-                <X className="text-white w-5 h-5" />
-              ) : (
-                <Menu className="text-white w-5 h-5" />
-              )}
-            </button>
-
-            <nav className="text-white gap-6 items-center hidden sm:flex">
+          {/* Desktop links */}
+          <div className="hidden items-center gap-8 md:flex">
+            {navLinks.map((link) => (
               <a
-                href="#fonctionnalites"
-                className="text-opacity-60 text-white hover:text-opacity-100 transition"
+                key={link.href}
+                href={link.href}
+                className="text-sm text-white/50 transition-colors hover:text-white"
               >
-                Fonctionnalités
+                {link.label}
               </a>
-              <a
-                href="#orientation"
-                className="text-opacity-60 text-white hover:text-opacity-100 transition"
-              >
-                Orientation
-              </a>
-              <a
-                href="#tarifs"
-                className="text-opacity-60 text-white hover:text-opacity-100 transition"
-              >
-                Tarifs
-              </a>
-              <a
-                href="#faq"
-                className="text-opacity-60 text-white hover:text-opacity-100 transition"
-              >
-                FAQ
-              </a>
-              <Link
-                href="/inscription"
-                className="bg-white py-2 px-4 rounded-lg text-black"
-              >
-                Commencer
-              </Link>
-            </nav>
+            ))}
           </div>
 
-          {/* Mobile menu */}
-          {mobileOpen && (
-            <nav className="flex flex-col gap-4 pb-4 sm:hidden text-white">
-              <a
-                href="#fonctionnalites"
-                className="text-opacity-60 text-white hover:text-opacity-100 transition"
-              >
-                Fonctionnalités
-              </a>
-              <a
-                href="#orientation"
-                className="text-opacity-60 text-white hover:text-opacity-100 transition"
-              >
-                Orientation
-              </a>
-              <a
-                href="#tarifs"
-                className="text-opacity-60 text-white hover:text-opacity-100 transition"
-              >
-                Tarifs
-              </a>
-              <a
-                href="#faq"
-                className="text-opacity-60 text-white hover:text-opacity-100 transition"
-              >
-                FAQ
-              </a>
+          {/* Desktop CTA */}
+          <div className="hidden md:block">
+            <Link
+              href="/inscription"
+              className="inline-flex h-9 items-center rounded-lg bg-gradient-to-r from-blue-500 to-violet-600 px-4 text-sm font-medium text-white shadow-[0_0_20px_rgba(59,130,246,0.3)] transition-shadow hover:shadow-[0_0_30px_rgba(59,130,246,0.5)]"
+            >
+              Commencer
+            </Link>
+          </div>
+
+          {/* Mobile hamburger */}
+          <button
+            className="flex h-9 w-9 items-center justify-center rounded-lg border border-white/10 md:hidden"
+            onClick={() => setMobileOpen(!mobileOpen)}
+            aria-label="Menu"
+          >
+            {mobileOpen ? (
+              <X className="h-4 w-4 text-white" />
+            ) : (
+              <Menu className="h-4 w-4 text-white" />
+            )}
+          </button>
+        </div>
+      </nav>
+
+      {/* Mobile drawer */}
+      <AnimatePresence>
+        {mobileOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-x-0 top-16 z-40 border-b border-white/5 bg-black/95 backdrop-blur-xl md:hidden"
+          >
+            <div className="flex flex-col gap-1 p-4">
+              {navLinks.map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setMobileOpen(false)}
+                  className="rounded-lg px-4 py-3 text-sm text-white/70 transition-colors hover:bg-white/5 hover:text-white"
+                >
+                  {link.label}
+                </a>
+              ))}
               <Link
                 href="/inscription"
-                className="bg-white py-2 px-4 rounded-lg text-black text-center"
+                onClick={() => setMobileOpen(false)}
+                className="mt-2 flex h-10 items-center justify-center rounded-lg bg-gradient-to-r from-blue-500 to-violet-600 text-sm font-medium text-white"
               >
                 Commencer
               </Link>
-            </nav>
-          )}
-        </div>
-      </div>
-    </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
-};
+}
